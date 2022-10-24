@@ -15,7 +15,6 @@ export type DisplayType = {
 export const Display: React.FC<DisplayType> = ({increment, reset, counter, dis, dis2, coloredDisplay,}) => {
 
 
-
     return (
         <div>
             <div className={s.display}>
