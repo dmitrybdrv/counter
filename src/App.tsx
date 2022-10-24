@@ -9,7 +9,7 @@ function App() {
 
     useEffect(() => {
         let valueAsString = localStorage.getItem("counterValue")
-        if(valueAsString) {
+        if (valueAsString) {
             let newValue = JSON.parse(valueAsString)
             setCounter(newValue)
         }
@@ -19,7 +19,6 @@ function App() {
     useEffect(() => {
         localStorage.setItem("counterValue", JSON.stringify(counter))
     }, [counter])
-
 
 
     const increment = () => {
@@ -38,7 +37,6 @@ function App() {
     const dis2 = counter === 0
 
     const coloredDisplay = counter > 4 ? 'displayRedColor' : ''
-
 
 
     return (
