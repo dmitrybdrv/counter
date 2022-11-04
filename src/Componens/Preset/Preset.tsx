@@ -9,36 +9,34 @@ export type PresetType = {
     setError: (value: string | null) => void
 }
 
-export const Preset: React.FC<PresetType> = ({set,error, setError,}) => {
+export const Preset: React.FC<PresetType> = ({set, error, setError,}) => {
 
 
     const [maxValue, setMaxValue] = useState(0)
     const [startValue, setStartValue] = useState(0)
     const [disabledBut, setDisabledBut] = useState(true)
 
-    useEffect(()=> {
+    useEffect(() => {
         let newStart = localStorage.getItem('startValue')
         if (newStart) {
             let startV = JSON.parse(newStart)
             setStartValue(startV)
         }
-    },[])
+    }, [])
     useEffect(() => {
         localStorage.setItem('startValue', JSON.stringify(startValue))
     }, [startValue])
 
-    useEffect(()=> {
+    useEffect(() => {
         let newValue = localStorage.getItem('max_value')
-        if(newValue) {
+        if (newValue) {
             let newMaxValue = JSON.parse(newValue)
             setMaxValue(newMaxValue)
         }
-    },[])
-    useEffect(()=> {
+    }, [])
+    useEffect(() => {
         localStorage.setItem('max_value', JSON.stringify(maxValue))
     }, [maxValue])
-
-
 
 
     const onChangeMAX = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +44,7 @@ export const Preset: React.FC<PresetType> = ({set,error, setError,}) => {
         setDisabledBut(false)
         setMaxValue(event.currentTarget.valueAsNumber)
         // if(event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber <= startValue || startValue < 0 )
-        if(event.currentTarget.valueAsNumber < startValue || event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber === startValue) {
+        if (event.currentTarget.valueAsNumber < startValue || event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber === startValue) {
             setError('incorrect value')
         }
     }
@@ -55,19 +53,18 @@ export const Preset: React.FC<PresetType> = ({set,error, setError,}) => {
         setDisabledBut(false)
         setStartValue(event.currentTarget.valueAsNumber)
         // if(event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber >= maxValue)
-        if(event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber === maxValue) {
+        if (event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber === maxValue) {
             setError('incorrect value')
         }
     }
     const preset = () => {
-        if(maxValue < startValue || maxValue < 0 || startValue < 0 || maxValue === startValue) {
+        if (maxValue < startValue || maxValue < 0 || startValue < 0 || maxValue === startValue) {
             setError('Change value')
         } else {
             set(maxValue, startValue)
             setDisabledBut(true)
         }
-        }
-
+    }
 
 
     return (
@@ -75,14 +72,17 @@ export const Preset: React.FC<PresetType> = ({set,error, setError,}) => {
 
             <div className={s.tablo}>
                 <div>
-                    <span>max value: </span> <input type='number' value={maxValue} onChange={onChangeMAX} className={error ? s.error : s.customInput}/> </div>
-                <div >
-                    <span>start value: </span> <input type="number" value={startValue} onChange={onChangeStart} className={error ? s.error : s.customInput}/>
+                    <span>max value: </span> <input type='number' value={maxValue} onChange={onChangeMAX}
+                                                    className={error ? s.error : s.customInput}/></div>
+                <div>
+                    <span>start value: </span> <input type="number" value={startValue} onChange={onChangeStart}
+                                                      className={error ? s.error : s.customInput}/>
                 </div>
             </div>
 
             <div className={s.presetButton}>
-                <Button callBack={preset} disabled={disabledBut} buttonName={'set'} className={disabledBut || error ? s.disablePresButton : s.presButton}/>
+                <Button callBack={preset} disabled={disabledBut} buttonName={'set'}
+                        className={disabledBut || error ? s.disablePresButton : s.presButton}/>
             </div>
         </div>
     );

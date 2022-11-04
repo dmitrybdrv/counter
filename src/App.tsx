@@ -14,7 +14,7 @@ function App() {
 
     useEffect(() => {
         let newStart = localStorage.getItem('display')
-        if(newStart) {
+        if (newStart) {
             let newStartValue = JSON.parse(newStart)
             setStartValue(newStartValue)
         }
@@ -22,12 +22,6 @@ function App() {
     useEffect(() => {
         localStorage.setItem('display', JSON.stringify(startValue))
     }, [startValue])
-
-
-
-
-
-
 
 
     const increment = () => {
