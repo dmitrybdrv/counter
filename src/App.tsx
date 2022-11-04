@@ -1,54 +1,69 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Display} from "./Componens/Display/Display";
+import {Preset} from "./Componens/Preset/Preset";
 
 
 function App() {
 
-    const [counter, setCounter] = useState<number>(0)
+
+    const [maxValue, setMaxValue] = useState(0) // МАКСИМАЛЬНОЕ ЗНАЧЕНИЕ
+    const [startValue, setStartValue] = useState(0) // СТАРТОВОЕ
+    const [start, setStart] = useState(0) // при обнулении (reset), для возврата на установленное значение(start value)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        let valueAsString = localStorage.getItem("counterValue")
-        if (valueAsString) {
-            let newValue = JSON.parse(valueAsString)
-            setCounter(newValue)
+        let newStart = localStorage.getItem('display')
+        if(newStart) {
+            let newStartValue = JSON.parse(newStart)
+            setStartValue(newStartValue)
         }
     }, [])
-
-
     useEffect(() => {
-        localStorage.setItem("counterValue", JSON.stringify(counter))
-    }, [counter])
+        localStorage.setItem('display', JSON.stringify(startValue))
+    }, [startValue])
+
+
+
+
+
+
 
 
     const increment = () => {
-        if (counter < 5) {
-            setCounter(counter + 1)
+        if (startValue < maxValue) {
+            setStartValue(startValue + 1)
         }
     }
-
-
     const reset = () => {
-        setCounter(0)
+        setStartValue(start)
     }
 
-
-    const dis = counter >= 5
-    const dis2 = counter === 0
-
-    const coloredDisplay = counter > 4 ? 'displayRedColor' : ''
+    const set = (max: number, start: number) => {
+        setMaxValue(max)
+        setStart(start)
+        setStartValue(start)
+    }
 
 
     return (
         <div className="App">
-            <Display
-                counter={counter}
-                increment={increment}
-                reset={reset}
-                dis={dis}
-                dis2={dis2}
-                coloredDisplay={coloredDisplay}
-            />
+            <div className={'wrapper'}>
+                <Preset
+                    set={set}
+                    error={error}
+                    setError={setError}
+                />
+
+                <Display
+                    startValue={startValue}
+                    increment={increment}
+                    reset={reset}
+                    maxValue={maxValue}
+                    error={error}
+
+                />
+            </div>
         </div>
 
     );
