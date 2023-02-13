@@ -1,89 +1,67 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, memo, useCallback} from 'react';
 import s from './Preset.module.css'
 import {Button} from "../Button/Button";
-
+import {useDispatch} from "react-redux";
+import {setMaxValueAC, setStartValueAC} from "../../State/counterReducer";
 
 export type PresetType = {
-    set: (max: number, start: number) => void
     error: string | null
-    setError: (value: string | null) => void
+    startValue: number
+    maxValue: number
+    preset: () => void
+    blocker: () => boolean
 }
 
-export const Preset: React.FC<PresetType> = ({set, error, setError,}) => {
+export const Preset: React.FC<PresetType> = memo((
+        {
+            error,
+            startValue,
+            maxValue,
+            preset,
+            blocker,
+        }) => {
+        const dispatch = useDispatch()
 
-
-    const [maxValue, setMaxValue] = useState(0)
-    const [startValue, setStartValue] = useState(0)
-    const [disabledBut, setDisabledBut] = useState(true)
-
-    useEffect(() => {
-        let newStart = localStorage.getItem('startValue')
-        if (newStart) {
-            let startV = JSON.parse(newStart)
-            setStartValue(startV)
+        //Function for setting start value in pre-installation block (left side block)
+        const setStartValue =(event: ChangeEvent<HTMLInputElement>) => {
+            dispatch(setStartValueAC(event.currentTarget.valueAsNumber))
         }
-    }, [])
-    useEffect(() => {
-        localStorage.setItem('startValue', JSON.stringify(startValue))
-    }, [startValue])
 
-    useEffect(() => {
-        let newValue = localStorage.getItem('max_value')
-        if (newValue) {
-            let newMaxValue = JSON.parse(newValue)
-            setMaxValue(newMaxValue)
+        //Function for setting max value in pre-installation block (left side block)
+        const setMaxValue = (event: ChangeEvent<HTMLInputElement>) => {
+            dispatch(setMaxValueAC(event.currentTarget.valueAsNumber))
         }
-    }, [])
-    useEffect(() => {
-        localStorage.setItem('max_value', JSON.stringify(maxValue))
-    }, [maxValue])
+
+        //callBack Function for setting two choosing values pre-installation block and setting start value of display block
+        const set = useCallback(() => {
+            preset()
+        }, [startValue])
 
 
-    const onChangeMAX = (event: ChangeEvent<HTMLInputElement>) => {
-        setError(null)
-        setDisabledBut(false)
-        setMaxValue(event.currentTarget.valueAsNumber)
-        // if(event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber <= startValue || startValue < 0 )
-        if (event.currentTarget.valueAsNumber < startValue || event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber === startValue) {
-            setError('incorrect value')
-        }
-    }
-    const onChangeStart = (event: ChangeEvent<HTMLInputElement>) => {
-        setError(null)
-        setDisabledBut(false)
-        setStartValue(event.currentTarget.valueAsNumber)
-        // if(event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber >= maxValue)
-        if (event.currentTarget.valueAsNumber < 0 || event.currentTarget.valueAsNumber === maxValue) {
-            setError('incorrect value')
-        }
-    }
-    const preset = () => {
-        if (maxValue < startValue || maxValue < 0 || startValue < 0 || maxValue === startValue) {
-            setError('Change value')
-        } else {
-            set(maxValue, startValue)
-            setDisabledBut(true)
-        }
-    }
 
 
-    return (
-        <div className={s.preset}>
 
-            <div className={s.tablo}>
-                <div>
-                    <span>max value: </span> <input type='number' value={maxValue} onChange={onChangeMAX}
-                                                    className={error ? s.error : s.customInput}/></div>
-                <div>
-                    <span>start value: </span> <input type="number" value={startValue} onChange={onChangeStart}
-                                                      className={error ? s.error : s.customInput}/>
+
+        return (
+            <div className={s.preset}>
+
+                <div className={s.field}>
+                    <div>
+                        <span>max value:</span> <input type='number' value={maxValue} onChange={setMaxValue}/>
+                    </div>
+
+                    <div>
+                        <span>start value: </span> <input type="number" value={startValue} onChange={setStartValue}/>
+                    </div>
+
+                    {error ? <span className={s.error}>{error}</span> : ''}
                 </div>
-            </div>
 
-            <div className={s.presetButton}>
-                <Button callBack={preset} disabled={disabledBut} buttonName={'set'}
-                        className={disabledBut || error ? s.disablePresButton : s.presButton}/>
+                <div>
+                    <Button disabled={blocker()} callBack={set} label={'SET'}/>
+                </div>
+
             </div>
-        </div>
-    );
-};
+        )
+    }
+)

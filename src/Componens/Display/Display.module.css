@@ -1,4 +1,4 @@
-.display {
+.displayContainer {
     grid-area: display;
     background-color: #282c34;
     border: 1px solid #6be1f7;
@@ -7,18 +7,16 @@
     margin: 0 auto;
     padding: 10px;
     text-align: center;
+    min-width: 200px;
 }
-
-.mainTablo {
+.display {
     border: 1px solid #6be1f7;
     border-radius: 10px;
-    width: auto;
     margin: 0 auto;
     padding: 10px;
     color: #6be1f7;
     outline: none;
 }
-
 .inputDisplay {
     background-color: #282c34;
     font-size: 24px;
@@ -28,8 +26,6 @@
     text-align: center;
     height: 80px;
 }
-
-
 .buttonsDisplay {
     border: 1px solid #6be1f7;
     border-radius: 10px;
@@ -41,33 +37,5 @@
 
 
 .error {
-    color: red;
-    background-color: #282c34;
-    font-size: 24px;
-    font-weight: bold;
-    outline: none;
-    text-align: center;
-    height: 80px;;
-}
-
-.displayButton {
-    color: #282c34;
-    background-color: #6be1f7;
-    font-size: 18px;
-    border: 2px solid #6be1f7;
-    border-radius: 10px;
-    margin: 10px;
-}
-.disabledDisplayButton {
-    color: #282c34;
-    background-color: #50858f;
-    font-size: 18px;
-    border: 2px solid #4e7c85;
-    border-radius: 10px;
-    margin: 10px;
-}
-
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    color: #f14646;
 }

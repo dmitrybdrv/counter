@@ -1,61 +1,53 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
 import {Display} from "./Componens/Display/Display";
 import {Preset} from "./Componens/Preset/Preset";
-
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateType} from "./State/Store";
+import {setAC, setErrorAC} from "./State/counterReducer";
 
 function App() {
 
+    const error = useSelector<RootStateType, null | string>(start => start.counter.error)
+    const startValue = useSelector<RootStateType, number>(start => start.counter.preset.startValue)
+    const maxValue = useSelector<RootStateType, number>(start => start.counter.preset.maxValue)
+    const start = useSelector<RootStateType, number>(start => start.counter.display.start)
+    const dispatch = useDispatch()
 
-    const [maxValue, setMaxValue] = useState(0) // МАКСИМАЛЬНОЕ ЗНАЧЕНИЕ
-    const [startValue, setStartValue] = useState(0) // СТАРТОВОЕ
-    const [start, setStart] = useState(0) // при обнулении (reset), для возврата на установленное значение(start value)
-    const [error, setError] = useState<string | null>(null)
+    //Function for setting value in display block (right side block of counter)
+    const preset = () => {
+        dispatch(setAC())
+    }
 
-    useEffect(() => {
-        let newStart = localStorage.getItem('display')
-        if (newStart) {
-            let newStartValue = JSON.parse(newStart)
-            setStartValue(newStartValue)
+    //Function for disabling buttons
+    const blocker = () => {
+        if (startValue > maxValue || startValue < 0) {
+            dispatch(setErrorAC('Incorrect value'))
+            return true
+        } else if(start === maxValue) {
+            return true
+        } else {
+            dispatch(setErrorAC(null))
+            return false
         }
-    }, [])
-    useEffect(() => {
-        localStorage.setItem('display', JSON.stringify(startValue))
-    }, [startValue])
 
-
-    const increment = () => {
-        if (startValue < maxValue) {
-            setStartValue(startValue + 1)
-        }
     }
-    const reset = () => {
-        setStartValue(start)
-    }
-
-    const set = (max: number, start: number) => {
-        setMaxValue(max)
-        setStart(start)
-        setStartValue(start)
-    }
-
 
     return (
         <div className="App">
             <div className={'wrapper'}>
                 <Preset
-                    set={set}
                     error={error}
-                    setError={setError}
+                    startValue={startValue}
+                    maxValue={maxValue}
+                    preset={preset}
+                    blocker={blocker}
                 />
 
                 <Display
-                    startValue={startValue}
-                    increment={increment}
-                    reset={reset}
-                    maxValue={maxValue}
+                    start={start}
                     error={error}
-
+                    blocker={blocker}
                 />
             </div>
         </div>

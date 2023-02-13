@@ -9,7 +9,7 @@
     text-align: center;
 }
 
-.tablo {
+.field {
     border: 1px solid #6be1f7;
     border-radius: 10px;
     width: auto;
@@ -17,53 +17,16 @@
     padding: 10px;
     color: #6be1f7;
     outline: none;
+    min-height: 70px;
 }
 
-.presetButton {
-    border: 1px solid #6be1f7;
-    border-radius: 10px;
-    width: auto;
-    margin: 10px auto;
-    padding: 10px;
+.field input {
     color: #6be1f7;
-}
-
-.customInput {
-    text-align: center;
-    width: auto;
-    height: 20px;
+    background-color: #282c34;
     border-radius: 10px;
-    outline: none;
-    border-color: #6be1f7;
-    margin: 10px;
+    padding-left: 10px;
 }
 
 .error {
-    color: red;
-    /*border: 1px solid red;*/
-    outline: none;
-    background-color: #efbaba;
-    border-color: #6be1f7;
-    text-align: center;
-    width: auto;
-    height: 20px;
-    border-radius: 10px;
-    margin: 10px;
-}
-
-.presButton {
-    color: #282c34;
-    background-color: #6be1f7;
-    font-size: 18px;
-    border: 2px solid #6be1f7;
-    border-radius: 10px;
-    margin: 10px;
-}
-.disablePresButton {
-    color: #282c34;
-    background-color: #50858f;
-    font-size: 18px;
-    border: 2px solid #4e7c85;
-    border-radius: 10px;
-    margin: 10px;
+    color: #f14646;
 }

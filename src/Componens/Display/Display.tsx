@@ -1,44 +1,57 @@
-import React from 'react';
+import React, {memo} from 'react';
 import s from './Display.module.css'
 import {Button} from "../Button/Button";
+import {useDispatch} from "react-redux";
+import {incrementAC, resetAC} from "../../State/counterReducer";
 
 export type DisplayType = {
-    startValue: number
-    increment: () => void
-    reset: () => void
-    maxValue: number
+    start: number
     error: string | null
+    blocker: () => boolean
 }
 
+export const Display: React.FC<DisplayType> = memo((
+    {
+        start,
+        error,
+        blocker,
+    }) => {
+    const dispatch = useDispatch()
 
-export const Display: React.FC<DisplayType> = ({startValue, increment, reset, maxValue, error,}) => {
-    const coloredNumber = startValue !== maxValue
-
-
-    const monitor = error ? <input type="text" value={error} className={s.error}/> :
-        <input type="number" value={startValue} className={coloredNumber ? s.inputDisplay : s.error}/>
-    const disBut = maxValue === startValue || !!error || startValue < 0 || maxValue < 0
-    const disBurReset = !!error
-
-    const incrementHandler = () => {
-        increment()
+    //Function for incrementation start value in display block (right side block)
+    const increment = () => {
+        dispatch(incrementAC(start))
     }
-    const resetHandler = () => {
-        reset()
+
+    //Function for reset value to start value in display block (right side block)
+    const reset = () => {
+        dispatch(resetAC())
     }
+
+
 
 
     return (
-        <div className={s.display}>
-            <div className={s.mainTablo}>
-                {monitor}
+        <div className={s.displayContainer}>
+
+            <div className={s.display}>
+                {error ? <span className={s.error}>{error}</span> : start}
             </div>
+
             <div className={s.buttonsDisplay}>
-                <Button buttonName={'inc'} callBack={incrementHandler}
-                        className={disBut ? s.disabledDisplayButton : s.displayButton}/>
-                <Button buttonName={'reset'} callBack={resetHandler}
-                        className={disBurReset ? s.disabledDisplayButton : s.displayButton}/>
+                <Button
+                    label={'INC'}
+                    callBack={increment}
+                    disabled={!!error || blocker()}
+                />
+
+                <Button
+                    label={'RESET'}
+                    callBack={reset}
+                    disabled={!!error || !blocker()}
+                />
             </div>
+
         </div>
-    );
-};
+    )
+})

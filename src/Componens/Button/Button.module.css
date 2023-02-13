@@ -1,0 +1,58 @@
+.defaultDarkMode {
+    background: #4b4a4a;
+    border-radius: 10px;
+    width: auto;
+    margin: 10px 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    border: 1px solid #4b4a4a;
+    color: #6be1f7;
+}
+.defaultDarkMode:hover {
+    border: 1px solid #6be1f7;
+    transition-property: background-color;
+    transition-duration: 700ms;
+}
+.defaultDarkMode:active {
+    background-color: #6be1f7;
+    color: #282c34;
+}
+.defaultDarkMode:disabled {
+    opacity: 35%;
+    background: #454950;
+    cursor: unset;
+    color: #6be1f7;
+    border: 1px solid #4b4a4a;
+}
+
+
+
+
+.defaultLightMode {
+    background: #6be1f7;
+    border-radius: 10px;
+    width: auto;
+    margin: 10px 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    border: 1px solid #6be1f7;
+    color: #282c34;
+}
+.defaultLightMode:hover {
+    border: 1px solid #bababb;
+    transition-property: background-color;
+    transition-duration: 700ms;
+}
+.defaultLightMode:active {
+    background-color: #4b4a4a;
+    color: #53ddf6;
+}
+.defaultLightMode:disabled {
+    opacity: 35%;
+    background: #6be1f7;
+    cursor: unset;
+    color: #000;
+    border: 1px solid #6be1f7;
+}
